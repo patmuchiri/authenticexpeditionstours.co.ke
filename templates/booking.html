@@ -1,0 +1,559 @@
+{% extends "base.html" %}
+
+{% block title %}Book a Tour - Authentic Expeditions{% endblock %}
+
+{% block content %}
+<div class="booking-hero">
+    <div class="hero-overlay">
+        <h1>Begin Your Kenyan Adventure</h1>
+        <p>Secure your spot for an unforgettable journey through Kenya's wild heart</p>
+    </div>
+</div>
+
+<div class="booking-container">
+    <div class="booking-content">
+        <div class="booking-intro">
+            <h2>Your Safari Awaits</h2>
+            <p>Complete this form to reserve your place on one of our exclusive Kenyan expeditions. Our team will personally confirm your booking within 24 hours.</p>
+            
+            <div class="booking-highlights">
+                <div class="highlight-card">
+                    <i class="fas fa-shield-alt"></i>
+                    <h3>Flexible Booking</h3>
+                    <p>Free cancellation up to 30 days before your tour</p>
+                </div>
+                <div class="highlight-card">
+                    <i class="fas fa-headset"></i>
+                    <h3>24/7 Support</h3>
+                    <p>Dedicated travel concierge available anytime</p>
+                </div>
+                <div class="highlight-card">
+                    <i class="fas fa-certificate"></i>
+                    <h3>Local Experts</h3>
+                    <p>Guided by Kenya's most experienced safari specialists</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Booking Form -->
+        <form id="bookingForm" action="#" method="POST" class="booking-form">
+            <div class="form-header">
+                <h3>Tour Reservation</h3>
+                <p>All fields are required unless noted</p>
+            </div>
+
+            <div class="form-grid">
+                <!-- Personal Information -->
+                <div class="form-group">
+                    <label for="name">Full Name</label>
+                    <input type="text" id="name" name="name" required placeholder="Enter your full name">
+                    <i class="fas fa-user"></i>
+                </div>
+
+                <div class="form-group">
+                    <label for="email">Email Address</label>
+                    <input type="email" id="email" name="email" required placeholder="your@email.com">
+                    <i class="fas fa-envelope"></i>
+                </div>
+
+                <div class="form-group">
+                    <label for="phone">Phone Number</label>
+                    <input type="tel" id="phone" name="phone" required placeholder="+254 700 000 000">
+                    <i class="fas fa-phone-alt"></i>
+                </div>
+
+                <!-- Tour Details -->
+                <div class="form-group">
+                    <label for="tour">Select Your Adventure</label>
+                    <select id="tour" name="tour" required>
+                        <option value="">-- Choose a Tour --</option>
+                        <option value="Masai Mara">Masai Mara Safari</option>
+                        <option value="Amboseli">Amboseli National Park</option>
+                        <option value="Samburu">Samburu National Reserve</option>
+                        <option value="Nairobi Day Trip">Nairobi Day Trip</option>
+                        <option value="Naivasha">Naivasha (Lake & Island)</option>
+                        <option value="Aberdare">Aberdare National Park</option>
+                    </select>
+                    <i class="fas fa-map-marked-alt"></i>
+                </div>
+
+                <div class="form-group">
+                    <label for="date">Preferred Tour Date</label>
+                    <input type="date" id="date" name="date" required>
+                    <i class="fas fa-calendar-alt"></i>
+                </div>
+
+                <div class="form-group">
+                    <label for="guests">Number of Guests</label>
+                    <input type="number" id="guests" name="guests" min="1" max="20" required placeholder="e.g. 2">
+                    <i class="fas fa-users"></i>
+                </div>
+            </div>
+
+            <div class="form-group full-width">
+                <label for="message">Special Requests</label>
+                <textarea id="message" name="message" rows="4" placeholder="Dietary restrictions, accessibility needs, or special occasions..."></textarea>
+                <i class="fas fa-comment-dots"></i>
+            </div>
+
+            <div class="form-footer">
+                <button type="submit" class="submit-btn">
+                    <span>Secure Your Booking</span>
+                    <i class="fas fa-arrow-right"></i>
+                </button>
+                <p class="privacy-note">
+                    <i class="fas fa-lock"></i> Your information is secure and will never be shared with third parties.
+                </p>
+            </div>
+        </form>
+    </div>
+</div>
+
+<!-- Success Modal -->
+<div id="successModal" class="modal">
+    <div class="modal-content">
+        <div class="modal-icon">
+            <i class="fas fa-check-circle"></i>
+        </div>
+        <h3>Booking Received!</h3>
+        <p>Thank you for choosing Authentic Expeditions. Your adventure request has been submitted successfully.</p>
+        <p>Our safari specialist will contact you within 24 hours to confirm details and answer any questions.</p>
+        <button id="closeModal" class="modal-btn">Continue Exploring</button>
+    </div>
+</div>
+
+<script>
+    document.getElementById('bookingForm').addEventListener('submit', function(e) {
+        e.preventDefault();
+        
+        // Form validation
+        const requiredFields = ['name', 'email', 'phone', 'tour', 'date', 'guests'];
+        let isValid = true;
+        
+        requiredFields.forEach(field => {
+            const element = document.getElementById(field);
+            if (!element.value.trim()) {
+                element.classList.add('error');
+                isValid = false;
+            } else {
+                element.classList.remove('error');
+            }
+        });
+        
+        if (!isValid) {
+            alert("Please fill in all required fields.");
+            return;
+        }
+        
+        // Email validation
+        const email = document.getElementById('email').value;
+        if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
+            document.getElementById('email').classList.add('error');
+            alert("Please enter a valid email address.");
+            return;
+        }
+        
+        // Show success modal
+        document.getElementById('successModal').style.display = 'flex';
+    });
+    
+    document.getElementById('closeModal').addEventListener('click', function() {
+        document.getElementById('successModal').style.display = 'none';
+    });
+</script>
+
+<style>
+    /* Color Variables from base.html */
+    :root {
+        --primary: #1a5276;
+        --secondary: #d35400;
+        --accent: #f39c12;
+        --nature-green: #27ae60;
+        --safari-tan: #e67e22;
+        --sunset-red: #e74c3c;
+        --sky-blue: #3498db;
+        --text-dark: #2c3e50;
+        --text-light: #ecf0f1;
+        --white: #ffffff;
+        --off-white: #f9f9f9;
+    }
+    
+    .booking-hero {
+        height: 60vh;
+        background: linear-gradient(rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5)), 
+                    url('https://images.unsplash.com/photo-1516426122078-c23e76319801?ixlib=rb-1.2.1&auto=format&fit=crop&w=1350&q=80') no-repeat center center;
+        background-size: cover;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        position: relative;
+        margin-bottom: 3rem;
+    }
+    
+    .hero-overlay {
+        text-align: center;
+        color: var(--white);
+        padding: 2rem;
+        max-width: 800px;
+    }
+    
+    .hero-overlay h1 {
+        font-size: 3.5rem;
+        margin-bottom: 1rem;
+        text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
+        animation: fadeInDown 1s ease;
+    }
+    
+    .hero-overlay p {
+        font-size: 1.5rem;
+        margin-bottom: 2rem;
+        text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.5);
+        animation: fadeInUp 1s ease;
+    }
+    
+    .booking-container {
+        max-width: 1200px;
+        margin: 0 auto;
+        padding: 0 2rem;
+    }
+    
+    .booking-content {
+        display: flex;
+        gap: 3rem;
+        margin-bottom: 5rem;
+    }
+    
+    .booking-intro {
+        flex: 1;
+        padding: 2rem;
+    }
+    
+    .booking-intro h2 {
+        font-size: 2.5rem;
+        color: var(--primary);
+        margin-bottom: 1.5rem;
+        position: relative;
+    }
+    
+    .booking-intro h2::after {
+        content: '';
+        position: absolute;
+        bottom: -10px;
+        left: 0;
+        width: 80px;
+        height: 4px;
+        background: var(--accent);
+    }
+    
+    .booking-intro p {
+        font-size: 1.1rem;
+        line-height: 1.6;
+        color: var(--text-dark);
+        margin-bottom: 2rem;
+    }
+    
+    .booking-highlights {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+        gap: 1.5rem;
+        margin-top: 3rem;
+    }
+    
+    .highlight-card {
+        background: var(--white);
+        padding: 1.5rem;
+        border-radius: 8px;
+        box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
+        transition: transform 0.3s ease, box-shadow 0.3s ease;
+    }
+    
+    .highlight-card:hover {
+        transform: translateY(-5px);
+        box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
+    }
+    
+    .highlight-card i {
+        font-size: 2rem;
+        color: var(--accent);
+        margin-bottom: 1rem;
+    }
+    
+    .highlight-card h3 {
+        font-size: 1.2rem;
+        margin-bottom: 0.5rem;
+        color: var(--primary);
+    }
+    
+    .highlight-card p {
+        font-size: 0.9rem;
+        color: var(--text-dark);
+        margin: 0;
+    }
+    
+    .booking-form {
+        flex: 1;
+        background: var(--white);
+        padding: 2.5rem;
+        border-radius: 10px;
+        box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+        position: relative;
+        top: -50px;
+    }
+    
+    .form-header {
+        margin-bottom: 2rem;
+        text-align: center;
+    }
+    
+    .form-header h3 {
+        font-size: 1.8rem;
+        color: var(--primary);
+        margin-bottom: 0.5rem;
+    }
+    
+    .form-header p {
+        color: var(--text-dark);
+        font-size: 0.9rem;
+    }
+    
+    .form-grid {
+        display: grid;
+        grid-template-columns: repeat(2, 1fr);
+        gap: 1.5rem;
+        margin-bottom: 1.5rem;
+    }
+    
+    .form-group {
+        position: relative;
+        margin-bottom: 1.5rem;
+    }
+    
+    .form-group.full-width {
+        grid-column: span 2;
+    }
+    
+    .form-group label {
+        display: block;
+        margin-bottom: 0.5rem;
+        font-weight: 600;
+        color: var(--primary);
+    }
+    
+    .form-group input,
+    .form-group select,
+    .form-group textarea {
+        width: 100%;
+        padding: 12px 15px 12px 40px;
+        border: 1px solid var(--off-white);
+        border-radius: 6px;
+        font-size: 1rem;
+        transition: all 0.3s ease;
+        background-color: var(--off-white);
+    }
+    
+    .form-group input:focus,
+    .form-group select:focus,
+    .form-group textarea:focus {
+        border-color: var(--accent);
+        box-shadow: 0 0 0 3px rgba(243, 156, 18, 0.2);
+        outline: none;
+        background-color: var(--white);
+    }
+    
+    .form-group.error input,
+    .form-group.error select,
+    .form-group.error textarea {
+        border-color: var(--sunset-red);
+        box-shadow: 0 0 0 3px rgba(231, 76, 60, 0.2);
+    }
+    
+    .form-group i {
+        position: absolute;
+        left: 15px;
+        top: 40px;
+        color: var(--accent);
+    }
+    
+    .form-group textarea {
+        min-height: 120px;
+        resize: vertical;
+    }
+    
+    .form-footer {
+        text-align: center;
+        margin-top: 2rem;
+    }
+    
+    .submit-btn {
+        background: linear-gradient(to right, var(--accent), var(--secondary));
+        color: var(--white);
+        border: none;
+        padding: 15px 30px;
+        font-size: 1.1rem;
+        font-weight: 600;
+        border-radius: 50px;
+        cursor: pointer;
+        display: inline-flex;
+        align-items: center;
+        transition: all 0.3s ease;
+        box-shadow: 0 5px 15px rgba(243, 156, 18, 0.4);
+    }
+    
+    .submit-btn:hover {
+        transform: translateY(-3px);
+        box-shadow: 0 8px 20px rgba(211, 84, 0, 0.6);
+        background: linear-gradient(to right, var(--secondary), var(--accent));
+    }
+    
+    .submit-btn i {
+        margin-left: 10px;
+        transition: transform 0.3s ease;
+    }
+    
+    .submit-btn:hover i {
+        transform: translateX(5px);
+    }
+    
+    .privacy-note {
+        font-size: 0.8rem;
+        color: var(--text-dark);
+        margin-top: 1rem;
+    }
+    
+    .privacy-note i {
+        color: var(--nature-green);
+        margin-right: 5px;
+    }
+    
+    /* Modal Styles */
+    .modal {
+        display: none;
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background: rgba(0, 0, 0, 0.7);
+        z-index: 1000;
+        align-items: center;
+        justify-content: center;
+        animation: fadeIn 0.3s ease;
+    }
+    
+    .modal-content {
+        background: var(--white);
+        padding: 3rem;
+        border-radius: 10px;
+        max-width: 500px;
+        text-align: center;
+        position: relative;
+        animation: slideUp 0.4s ease;
+    }
+    
+    .modal-icon {
+        font-size: 4rem;
+        color: var(--nature-green);
+        margin-bottom: 1.5rem;
+    }
+    
+    .modal h3 {
+        font-size: 1.8rem;
+        color: var(--primary);
+        margin-bottom: 1rem;
+    }
+    
+    .modal p {
+        color: var(--text-dark);
+        margin-bottom: 1.5rem;
+        line-height: 1.6;
+    }
+    
+    .modal-btn {
+        background: var(--primary);
+        color: var(--white);
+        border: none;
+        padding: 12px 25px;
+        font-size: 1rem;
+        border-radius: 6px;
+        cursor: pointer;
+        transition: all 0.3s ease;
+    }
+    
+    .modal-btn:hover {
+        background: var(--accent);
+    }
+    
+    /* Animations */
+    @keyframes fadeInDown {
+        from {
+            opacity: 0;
+            transform: translateY(-30px);
+        }
+        to {
+            opacity: 1;
+            transform: translateY(0);
+        }
+    }
+    
+    @keyframes fadeInUp {
+        from {
+            opacity: 0;
+            transform: translateY(30px);
+        }
+        to {
+            opacity: 1;
+            transform: translateY(0);
+        }
+    }
+    
+    @keyframes fadeIn {
+        from { opacity: 0; }
+        to { opacity: 1; }
+    }
+    
+    @keyframes slideUp {
+        from {
+            opacity: 0;
+            transform: translateY(50px);
+        }
+        to {
+            opacity: 1;
+            transform: translateY(0);
+        }
+    }
+    
+    /* Responsive Design */
+    @media (max-width: 900px) {
+        .booking-content {
+            flex-direction: column;
+        }
+        
+        .booking-form {
+            top: 0;
+        }
+        
+        .form-grid {
+            grid-template-columns: 1fr;
+        }
+        
+        .form-group.full-width {
+            grid-column: span 1;
+        }
+    }
+    
+    @media (max-width: 600px) {
+        .hero-overlay h1 {
+            font-size: 2.5rem;
+        }
+        
+        .hero-overlay p {
+            font-size: 1.2rem;
+        }
+        
+        .booking-intro h2 {
+            font-size: 2rem;
+        }
+    }
+</style>
+
+{% endblock %}

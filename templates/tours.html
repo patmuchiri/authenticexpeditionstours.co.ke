@@ -1,0 +1,525 @@
+{% extends "base.html" %}
+
+{% block title %}Safari Packages - Authentic Expeditions Tours | Kenya Safari Experts{% endblock %}
+
+{% block styles %}
+<style>
+    /* Tours Page Styles */
+    .tours-hero {
+        background: linear-gradient(rgba(26, 82, 118, 0.7), rgba(26, 82, 118, 0.7)), 
+                    url("{{ url_for('static', filename='images/safari-hero.jpg') }}");
+        background-size: cover;
+        background-position: center;
+        height: 50vh;
+        display: flex;
+        align-items: center;
+        text-align: center;
+        color: var(--white);
+        margin-bottom: 60px;
+    }
+    
+    .tours-hero-content {
+        max-width: 800px;
+        margin: 0 auto;
+        padding: 0 20px;
+    }
+    
+    .tours-hero h1 {
+        font-size: 3rem;
+        margin-bottom: 20px;
+        text-shadow: 2px 2px 8px rgba(0,0,0,0.3);
+    }
+    
+    .tours-container {
+        max-width: 1200px;
+        margin: 0 auto;
+        padding: 0 20px;
+    }
+    
+    .safari-package {
+        background-color: var(--white);
+        border-radius: 10px;
+        overflow: hidden;
+        box-shadow: 0 15px 40px rgba(0,0,0,0.1);
+        margin-bottom: 60px;
+        transition: var(--transition);
+    }
+    
+    .safari-package:hover {
+        transform: translateY(-10px);
+        box-shadow: 0 20px 50px rgba(0,0,0,0.15);
+    }
+    
+    .package-header {
+        padding: 30px;
+        background-color: var(--primary);
+        color: var(--white);
+    }
+    
+    .package-header h2 {
+        font-size: 2rem;
+        margin-bottom: 10px;
+    }
+    
+    .package-header .price {
+        font-size: 1.2rem;
+        color: var(--accent);
+        font-weight: 600;
+    }
+    
+    /* Image Slider */
+    .slider-container {
+        position: relative;
+        height: 400px;
+        overflow: hidden;
+    }
+    
+    .slider {
+        display: flex;
+        width: 300%;
+        height: 100%;
+        transition: transform 0.8s ease-in-out;
+    }
+    
+    .slide {
+        width: 33.33%;
+        height: 100%;
+    }
+    
+    .slide img {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+    }
+    
+    .slider-nav {
+        position: absolute;
+        bottom: 20px;
+        left: 0;
+        right: 0;
+        display: flex;
+        justify-content: center;
+        gap: 10px;
+    }
+    
+    .slider-dot {
+        width: 12px;
+        height: 12px;
+        border-radius: 50%;
+        background-color: rgba(255,255,255,0.5);
+        cursor: pointer;
+        transition: var(--transition);
+    }
+    
+    .slider-dot.active {
+        background-color: var(--white);
+        transform: scale(1.2);
+    }
+    
+    .package-content {
+        padding: 30px;
+    }
+    
+    .package-section {
+        margin-bottom: 30px;
+    }
+    
+    .package-section h3 {
+        color: var(--primary);
+        margin-bottom: 15px;
+        font-size: 1.5rem;
+        position: relative;
+        padding-bottom: 10px;
+    }
+    
+    .package-section h3::after {
+        content: '';
+        position: absolute;
+        bottom: 0;
+        left: 0;
+        width: 50px;
+        height: 3px;
+        background-color: var(--accent);
+    }
+    
+    .package-section ul {
+        list-style: none;
+    }
+    
+    .package-section ul li {
+        margin-bottom: 10px;
+        padding-left: 25px;
+        position: relative;
+    }
+    
+    .package-section ul li::before {
+        content: '\f054';
+        font-family: 'Font Awesome 6 Free';
+        font-weight: 900;
+        color: var(--accent);
+        position: absolute;
+        left: 0;
+        top: 2px;
+        font-size: 0.8rem;
+    }
+    
+    .package-cta {
+        text-align: center;
+        margin-top: 30px;
+    }
+    
+    .package-cta .btn {
+        padding: 12px 30px;
+        font-size: 1.1rem;
+    }
+    
+    /* Responsive Styles */
+    @media (max-width: 992px) {
+        .slider-container {
+            height: 350px;
+        }
+    }
+    
+    @media (max-width: 768px) {
+        .tours-hero h1 {
+            font-size: 2.5rem;
+        }
+        
+        .package-header h2 {
+            font-size: 1.8rem;
+        }
+        
+        .slider-container {
+            height: 300px;
+        }
+    }
+    
+    @media (max-width: 576px) {
+        .tours-hero {
+            height: 40vh;
+        }
+        
+        .tours-hero h1 {
+            font-size: 2rem;
+        }
+        
+        .slider-container {
+            height: 250px;
+        }
+    }
+</style>
+{% endblock %}
+
+{% block content %}
+<!-- Hero Section -->
+<section class="tours-hero">
+    <div class="tours-hero-content">
+        <h1>Our Safari Packages</h1>
+        <p>Experience Kenya's wilderness with our expertly crafted adventures</p>
+    </div>
+</section>
+
+<div class="tours-container">
+    <!-- Masai Mara Package -->
+    <div class="safari-package">
+        <div class="package-header">
+            <h2>Masai Mara National Reserve</h2>
+            <p>Witness the Great Migration in Kenya's most famous wildlife reserve</p>
+            <p class="price">From USD 600 per person (min 4 pax)</p>
+        </div>
+        
+        <!-- Image Slider -->
+        <div class="slider-container" id="mara-slider">
+            <div class="slider">
+                <div class="slide">
+                    <img src="{{ url_for('static', filename='images/masai-mara.jpg') }}" alt="Masai Mara Landscape">
+                </div>
+                <div class="slide">
+                    <img src="{{ url_for('static', filename='images/maasai-mara.jpg') }}" alt="Masai Mara Wildlife">
+                </div>
+                <div class="slide">
+                    <img src="{{ url_for('static', filename='images/SarovaMaraGameCamp.jpg') }}" alt="Sarova Mara Game Camp">
+                </div>
+            </div>
+            <div class="slider-nav">
+                <div class="slider-dot active" data-slide="0"></div>
+                <div class="slider-dot" data-slide="1"></div>
+                <div class="slider-dot" data-slide="2"></div>
+            </div>
+        </div>
+        
+        <div class="package-content">
+            <div class="package-section">
+                <h3>Experience</h3>
+                <p>Our carefully curated 3-day Masai Mara safari offers an authentic, unforgettable adventure at an unbeatable price. From the bustling wildlife to the vibrant Maasai culture, you'll be immersed in the diverse ecosystem that makes this one of the world's most sought-after safari destinations.</p>
+            </div>
+            
+            <div class="package-section">
+                <h3>Itinerary</h3>
+                <ul>
+                    <li><strong>Day 1:</strong> Pickup from Airport/Hotel | Drive to Masai Mara | Stop at Great Rift Valley | Check-in & lunch | Afternoon Game Drive | Overnight at camp/lodge</li>
+                    <li><strong>Day 2:</strong> Breakfast | Full Day Game Drive with packed lunch | Return to camp for dinner | Overnight stay</li>
+                    <li><strong>Day 3:</strong> Breakfast | Depart from camp | Optional Maasai Village visit | Drop-off at Airport/Hotel</li>
+                </ul>
+            </div>
+            
+            <div class="package-section">
+                <h3>Includes</h3>
+                <ul>
+                    <li>Transport in 4x4 Land Cruiser or tour van</li>
+                    <li>Mineral water throughout the safari</li>
+                    <li>All game drives as per itinerary</li>
+                    <li>Accommodation in selected camp/lodge</li>
+                    <li>All meals on full board basis</li>
+                    <li>Services of professional tour guide/driver</li>
+                </ul>
+            </div>
+            
+            <div class="package-section">
+                <h3>Excludes</h3>
+                <ul>
+                    <li>Park entry fees</li>
+                    <li>Personal travel insurance</li>
+                    <li>Personal items and expenses</li>
+                    <li>Alcoholic & soft drinks</li>
+                    <li>Maasai Village visit (USD 20 per person, optional)</li>
+                    <li>Tips for guides and staff</li>
+                </ul>
+            </div>
+            
+            <div class="package-cta">
+                <a href="{{ url_for('booking') }}?tour=Masai+Mara" class="btn">Book This Safari</a>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Amboseli Package -->
+    <div class="safari-package">
+        <div class="package-header">
+            <h2>Amboseli National Park</h2>
+            <p>Elephants with Mount Kilimanjaro as your backdrop</p>
+            <p class="price">From USD 550 per person (min 4 pax)</p>
+        </div>
+        
+        <!-- Image Slider -->
+        <div class="slider-container" id="amboseli-slider">
+            <div class="slider">
+                <div class="slide">
+                    <img src="{{ url_for('static', filename='images/amboseli.jpg') }}" alt="Amboseli Landscape">
+                </div>
+                <div class="slide">
+                    <img src="{{ url_for('static', filename='images/amboselicamp.jpg') }}" alt="Amboseli Camp">
+                </div>
+                <div class="slide">
+                    <img src="{{ url_for('static', filename='images/amboselisopalodge.jpg') }}" alt="Amboseli Sopa Lodge">
+                </div>
+            </div>
+            <div class="slider-nav">
+                <div class="slider-dot active" data-slide="0"></div>
+                <div class="slider-dot" data-slide="1"></div>
+                <div class="slider-dot" data-slide="2"></div>
+            </div>
+        </div>
+        
+        <div class="package-content">
+            <div class="package-section">
+                <h3>Experience</h3>
+                <p>Amboseli National Park, nestled at the foot of Mount Kilimanjaro, is famous for its vast savannahs and striking landscapes. The park is home to large herds of elephants, along with lions, cheetahs, zebras, and an array of birdlife, offering spectacular wildlife viewing opportunities.</p>
+            </div>
+            
+            <div class="package-section">
+                <h3>Itinerary</h3>
+                <ul>
+                    <li><strong>Day 1:</strong> Pickup from Airport/Hotel | Drive to Amboseli | Check-in & lunch | Afternoon Game Drive | Overnight at camp/lodge</li>
+                    <li><strong>Day 2:</strong> Breakfast | Full Day Game Drive with packed lunch | Return to camp for dinner | Overnight stay</li>
+                    <li><strong>Day 3:</strong> Breakfast | Depart from camp | Optional Maasai Village visit | Drop-off at Airport/Hotel</li>
+                </ul>
+            </div>
+            
+            <div class="package-section">
+                <h3>Includes</h3>
+                <ul>
+                    <li>Transport in 4x4 Land Cruiser or tour van</li>
+                    <li>Mineral water throughout the safari</li>
+                    <li>Accommodation in selected camp/lodge</li>
+                    <li>All meals on full board basis</li>
+                    <li>All game drives as per itinerary</li>
+                    <li>Services of professional tour guide/driver</li>
+                </ul>
+            </div>
+            
+            <div class="package-section">
+                <h3>Excludes</h3>
+                <ul>
+                    <li>Park entry fees</li>
+                    <li>Personal travel insurance</li>
+                    <li>Personal items and expenses</li>
+                    <li>Alcoholic & soft drinks</li>
+                    <li>Maasai Village visit (USD 20 per person, optional)</li>
+                    <li>Tips for guides and staff</li>
+                </ul>
+            </div>
+            
+            <div class="package-cta">
+                <a href="{{ url_for('booking') }}?tour=Amboseli" class="btn">Book This Safari</a>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Samburu Package -->
+    <div class="safari-package">
+        <div class="package-header">
+            <h2>Samburu National Reserve</h2>
+            <p>Discover the rugged beauty of Northern Kenya</p>
+            <p class="price">From USD 650 per person (min 4 pax)</p>
+        </div>
+        
+        <!-- Image Slider -->
+        <div class="slider-container" id="samburu-slider">
+            <div class="slider">
+                <div class="slide">
+                    <img src="{{ url_for('static', filename='images/samburu.jpg') }}" alt="Samburu Landscape">
+                </div>
+                <div class="slide">
+                    <img src="{{ url_for('static', filename='images/mtololokwe.webp') }}" alt="Mt. Ololokwe">
+                </div>
+                <div class="slide">
+                    <img src="{{ url_for('static', filename='images/zebrasamburu.jpg') }}" alt="Samburu Wildlife">
+                </div>
+            </div>
+            <div class="slider-nav">
+                <div class="slider-dot active" data-slide="0"></div>
+                <div class="slider-dot" data-slide="1"></div>
+                <div class="slider-dot" data-slide="2"></div>
+            </div>
+        </div>
+        
+        <div class="package-content">
+            <div class="package-section">
+                <h3>Experience</h3>
+                <p>Located in Northern Kenya, Samburu is renowned for its rugged beauty, arid landscapes, and unique wildlife. This reserve is home to rare species like Grevy's zebra, Somali ostrich, and reticulated giraffe, making it perfect for those seeking adventure off the beaten path.</p>
+            </div>
+            
+            <div class="package-section">
+                <h3>Itinerary</h3>
+                <ul>
+                    <li><strong>Day 1:</strong> Early departure | Scenic stop at Mt. Ololokwe | Arrival in Samburu | Cultural experience with Samburu warriors | Dinner & overnight</li>
+                    <li><strong>Day 2:</strong> Early morning game drive | Afternoon visit to Reteti Elephant Sanctuary | Return to camp for dinner</li>
+                    <li><strong>Day 3:</strong> Breakfast | Optional nature walk | Begin return journey with lunch stop en route</li>
+                </ul>
+            </div>
+            
+            <div class="package-section">
+                <h3>Includes</h3>
+                <ul>
+                    <li>Transport in 4x4 Land Cruiser or tour van</li>
+                    <li>Mineral water throughout the safari</li>
+                    <li>Accommodation in selected camp/lodge</li>
+                    <li>All meals on full board basis</li>
+                    <li>All game drives as per itinerary</li>
+                    <li>Services of professional tour guide/driver</li>
+                </ul>
+            </div>
+            
+            <div class="package-section">
+                <h3>Excludes</h3>
+                <ul>
+                    <li>Park entry fees</li>
+                    <li>Personal travel insurance</li>
+                    <li>Personal items and expenses</li>
+                    <li>Alcoholic & soft drinks</li>
+                    <li>Samburu Village visit (USD 20 per person, optional)</li>
+                    <li>Tips for guides and staff</li>
+                </ul>
+            </div>
+            
+            <div class="package-cta">
+                <a href="{{ url_for('booking') }}?tour=Samburu" class="btn">Book This Safari</a>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block scripts %}
+<script>
+    // Initialize all sliders
+    document.addEventListener('DOMContentLoaded', function() {
+        // Function to handle slider functionality
+        function initSlider(sliderId) {
+            const slider = document.querySelector(`#${sliderId} .slider`);
+            const dots = document.querySelectorAll(`#${sliderId} .slider-dot`);
+            let currentSlide = 0;
+            const slideCount = 3; // We have 3 slides per slider
+            
+            // Auto-rotate slides every 4 seconds
+            const interval = setInterval(() => {
+                currentSlide = (currentSlide + 1) % slideCount;
+                updateSlider();
+            }, 4000);
+            
+            // Dot click navigation
+            dots.forEach(dot => {
+                dot.addEventListener('click', function() {
+                    currentSlide = parseInt(this.getAttribute('data-slide'));
+                    updateSlider();
+                    // Reset timer when manually navigating
+                    clearInterval(interval);
+                });
+            });
+            
+            function updateSlider() {
+                // Update slider position
+                slider.style.transform = `translateX(-${currentSlide * 33.33}%)`;
+                
+                // Update active dot
+                dots.forEach((dot, index) => {
+                    if (index === currentSlide) {
+                        dot.classList.add('active');
+                    } else {
+                        dot.classList.remove('active');
+                    }
+                });
+            }
+            
+            // Pause on hover
+            const sliderContainer = document.getElementById(sliderId);
+            sliderContainer.addEventListener('mouseenter', () => {
+                clearInterval(interval);
+            });
+            
+            sliderContainer.addEventListener('mouseleave', () => {
+                clearInterval(interval);
+                interval = setInterval(() => {
+                    currentSlide = (currentSlide + 1) % slideCount;
+                    updateSlider();
+                }, 4000);
+            });
+        }
+        
+        // Initialize all sliders
+        initSlider('mara-slider');
+        initSlider('amboseli-slider');
+        initSlider('samburu-slider');
+        
+        // Animation for safari packages on scroll
+        const packages = document.querySelectorAll('.safari-package');
+        
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.style.opacity = 1;
+                    entry.target.style.transform = 'translateY(0)';
+                }
+            });
+        }, { threshold: 0.1 });
+        
+        packages.forEach(pkg => {
+            pkg.style.opacity = 0;
+            pkg.style.transform = 'translateY(30px)';
+            pkg.style.transition = 'opacity 0.6s ease, transform 0.6s ease';
+            observer.observe(pkg);
+        });
+    });
+</script>
+{% endblock %}

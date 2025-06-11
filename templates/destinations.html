@@ -1,0 +1,542 @@
+{% extends "base.html" %}
+
+{% block title %}Day Trips - Authentic Expeditions Tours | Kenya Safari Experts{% endblock %}
+
+{% block styles %}
+<style>
+    /* Destinations Page Styles */
+    .destinations-hero {
+        background: linear-gradient(rgba(26, 82, 118, 0.7), rgba(26, 82, 118, 0.7)), 
+                    url("{{ url_for('static', filename='images/daytrips-hero.jpg') }}");
+        background-size: cover;
+        background-position: center;
+        height: 50vh;
+        display: flex;
+        align-items: center;
+        text-align: center;
+        color: var(--white);
+        margin-bottom: 60px;
+    }
+    
+    .destinations-hero-content {
+        max-width: 800px;
+        margin: 0 auto;
+        padding: 0 20px;
+    }
+    
+    .destinations-hero h1 {
+        font-size: 3rem;
+        margin-bottom: 20px;
+        text-shadow: 2px 2px 8px rgba(0,0,0,0.3);
+    }
+    
+    .destinations-container {
+        max-width: 1200px;
+        margin: 0 auto;
+        padding: 0 20px;
+    }
+    
+    .daytrip-package {
+        background-color: var(--white);
+        border-radius: 10px;
+        overflow: hidden;
+        box-shadow: 0 15px 40px rgba(0,0,0,0.1);
+        margin-bottom: 60px;
+        transition: var(--transition);
+    }
+    
+    .daytrip-package:hover {
+        transform: translateY(-10px);
+        box-shadow: 0 20px 50px rgba(0,0,0,0.15);
+    }
+    
+    .package-header {
+        padding: 30px;
+        background-color: var(--primary);
+        color: var(--white);
+    }
+    
+    .package-header h2 {
+        font-size: 2rem;
+        margin-bottom: 10px;
+    }
+    
+    .package-header .price {
+        font-size: 1.2rem;
+        color: var(--accent);
+        font-weight: 600;
+    }
+    
+    /* Image Slider */
+    .slider-container {
+        position: relative;
+        height: 400px;
+        overflow: hidden;
+    }
+    
+    .slider {
+        display: flex;
+        width: 300%;
+        height: 100%;
+        transition: transform 0.8s ease-in-out;
+    }
+    
+    .slide {
+        width: 33.33%;
+        height: 100%;
+    }
+    
+    .slide img {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+    }
+    
+    .slider-nav {
+        position: absolute;
+        bottom: 20px;
+        left: 0;
+        right: 0;
+        display: flex;
+        justify-content: center;
+        gap: 10px;
+    }
+    
+    .slider-dot {
+        width: 12px;
+        height: 12px;
+        border-radius: 50%;
+        background-color: rgba(255,255,255,0.5);
+        cursor: pointer;
+        transition: var(--transition);
+    }
+    
+    .slider-dot.active {
+        background-color: var(--white);
+        transform: scale(1.2);
+    }
+    
+    .package-content {
+        padding: 30px;
+    }
+    
+    .package-section {
+        margin-bottom: 30px;
+    }
+    
+    .package-section h3 {
+        color: var(--primary);
+        margin-bottom: 15px;
+        font-size: 1.5rem;
+        position: relative;
+        padding-bottom: 10px;
+    }
+    
+    .package-section h3::after {
+        content: '';
+        position: absolute;
+        bottom: 0;
+        left: 0;
+        width: 50px;
+        height: 3px;
+        background-color: var(--accent);
+    }
+    
+    .package-section ul {
+        list-style: none;
+    }
+    
+    .package-section ul li {
+        margin-bottom: 10px;
+        padding-left: 25px;
+        position: relative;
+    }
+    
+    .package-section ul li::before {
+        content: '\f054';
+        font-family: 'Font Awesome 6 Free';
+        font-weight: 900;
+        color: var(--accent);
+        position: absolute;
+        left: 0;
+        top: 2px;
+        font-size: 0.8rem;
+    }
+    
+    .highlight-box {
+        background-color: rgba(243, 156, 18, 0.1);
+        border-left: 4px solid var(--accent);
+        padding: 15px;
+        margin: 20px 0;
+        border-radius: 0 4px 4px 0;
+    }
+    
+    .package-cta {
+        text-align: center;
+        margin-top: 30px;
+    }
+    
+    .package-cta .btn {
+        padding: 12px 30px;
+        font-size: 1.1rem;
+    }
+    
+    /* Responsive Styles */
+    @media (max-width: 992px) {
+        .slider-container {
+            height: 350px;
+        }
+    }
+    
+    @media (max-width: 768px) {
+        .destinations-hero h1 {
+            font-size: 2.5rem;
+        }
+        
+        .package-header h2 {
+            font-size: 1.8rem;
+        }
+        
+        .slider-container {
+            height: 300px;
+        }
+    }
+    
+    @media (max-width: 576px) {
+        .destinations-hero {
+            height: 40vh;
+        }
+        
+        .destinations-hero h1 {
+            font-size: 2rem;
+        }
+        
+        .slider-container {
+            height: 250px;
+        }
+    }
+</style>
+{% endblock %}
+
+{% block content %}
+<!-- Hero Section -->
+<section class="destinations-hero">
+    <div class="destinations-hero-content">
+        <h1>Discover Our Day Trips</h1>
+        <p>Experience Kenya's wonders in just one day</p>
+    </div>
+</section>
+
+<div class="destinations-container">
+    <!-- Nairobi Day Trip -->
+    <div class="daytrip-package">
+        <div class="package-header">
+            <h2>Nairobi Day Trip</h2>
+            <p>Wildlife adventure in the heart of the city</p>
+            <p class="price">From USD 45 per person (min 6 pax)</p>
+        </div>
+        
+        <!-- Image Slider -->
+        <div class="slider-container" id="nairobi-slider">
+            <div class="slider">
+                <div class="slide">
+                    <img src="{{ url_for('static', filename='images/NairobiNationalPark.jpg') }}" alt="Nairobi National Park">
+                </div>
+                <div class="slide">
+                    <img src="{{ url_for('static', filename='images/nairobipark.webp') }}" alt="Nairobi Park Wildlife">
+                </div>
+                <div class="slide">
+                    <img src="{{ url_for('static', filename='images/nairobipark1.webp') }}" alt="Nairobi Park Landscape">
+                </div>
+            </div>
+            <div class="slider-nav">
+                <div class="slider-dot active" data-slide="0"></div>
+                <div class="slider-dot" data-slide="1"></div>
+                <div class="slider-dot" data-slide="2"></div>
+            </div>
+        </div>
+        
+        <div class="package-content">
+            <div class="package-section">
+                <h3>Experience</h3>
+                <p>Embark on an unforgettable adventure right in the heart of Nairobi with visits to Nairobi National Park and the iconic Giraffe Centre. These two gems offer an incredible mix of wildlife encounters and breathtaking landscapes all within close proximity to the bustling city.</p>
+                
+                <div class="highlight-box">
+                    <strong>Did you know?</strong> Nairobi National Park is the only national park in the world located within a capital city's boundaries, offering a unique wildlife experience with a city skyline backdrop.
+                </div>
+            </div>
+            
+            <div class="package-section">
+                <h3>Highlights</h3>
+                <ul>
+                    <li>Morning pickup from your Nairobi hotel</li>
+                    <li>Game drive through Nairobi National Park</li>
+                    <li>Visit to the Giraffe Centre to feed Rothschild giraffes</li>
+                    <li>Lunch at a local restaurant (optional)</li>
+                </ul>
+            </div>
+            
+            <div class="package-section">
+                <h3>Includes</h3>
+                <ul>
+                    <li>Transport in safari van or 4x4 Land Cruiser</li>
+                    <li>Bottled mineral water throughout the trip</li>
+                    <li>Professional safari guide/driver</li>
+                    <li>Hotel pickup and drop-off within Nairobi</li>
+                </ul>
+            </div>
+            
+            <div class="package-section">
+                <h3>Excludes</h3>
+                <ul>
+                    <li>Park fee</li>
+					<li>Giraffe Centre entry fees</li>
+					<li>Lunch and snacks</li>
+                    <li>Personal expenses</li>
+					<li>Accommodation</li>
+                    <li>Pickup outside Nairobi area</li>
+                    <li>Tips for guides and drivers</li>
+                </ul>
+            </div>
+            
+            <div class="package-cta">
+                <a href="{{ url_for('booking') }}?tour=Nairobi+Day+Trip" class="btn">Book This Experience</a>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Naivasha Day Trip -->
+    <div class="daytrip-package">
+        <div class="package-header">
+            <h2>Naivasha Day Trip</h2>
+            <p>Boat rides and wildlife on beautiful Lake Naivasha</p>
+            <p class="price">From USD 90 per person (min 6 pax)</p>
+        </div>
+        
+        <!-- Image Slider -->
+        <div class="slider-container" id="naivasha-slider">
+            <div class="slider">
+                <div class="slide">
+                    <img src="{{ url_for('static', filename='images/CrescentIslandboat.jpg') }}" alt="Boat Ride on Lake Naivasha">
+                </div>
+                <div class="slide">
+                    <img src="{{ url_for('static', filename='images/crescentislandnaivasha.jpg') }}" alt="Crescent Island Wildlife">
+                </div>
+                <div class="slide">
+                    <img src="{{ url_for('static', filename='images/Crescent-IslandWaterbuck.webp') }}" alt="Waterbuck on Crescent Island">
+                </div>
+            </div>
+            <div class="slider-nav">
+                <div class="slider-dot active" data-slide="0"></div>
+                <div class="slider-dot" data-slide="1"></div>
+                <div class="slider-dot" data-slide="2"></div>
+            </div>
+        </div>
+        
+        <div class="package-content">
+            <div class="package-section">
+                <h3>Experience</h3>
+                <p>Explore Lake Naivasha's serene beauty and its rich birdlife on this perfect day trip for nature lovers and adventure seekers. The highlight is Crescent Island, a predator-free sanctuary where you can walk among zebras, giraffes, and antelopes with stunning lake views.</p>
+                
+                <div class="highlight-box">
+                    <strong>Unique Feature:</strong> Crescent Island is one of the few places in Africa where you can walk freely among wildlife without vehicle restrictions, offering an intimate safari experience.
+                </div>
+            </div>
+            
+            <div class="package-section">
+                <h3>Activities</h3>
+                <ul>
+                    <li>Scenic drive through the Great Rift Valley</li>
+                    <li>Boat ride on Lake Naivasha to see hippos and birds</li>
+                    <li>Guided walking safari on Crescent Island</li>
+                    <li>Optional visit to Hell's Gate National Park</li>
+                    <li>Lunch at a lakeside restaurant</li>
+                </ul>
+            </div>
+            
+            <div class="package-section">
+                <h3>Includes</h3>
+                <ul>
+                    <li>Round-trip transport from Nairobi</li>
+                    <li>Boat ride on Lake Naivasha</li>
+                    <li>Entry fees to Crescent Island</li>
+                    <li>Professional guide services</li>
+                    <li>Bottled water and lunch</li>
+                </ul>
+            </div>
+            
+            <div class="package-section">
+                <h3>Excludes</h3>
+                <ul>
+                    <li>Personal expenses and souvenirs</li>
+                    <li>Additional activities not mentioned</li>
+                    <li>Tips for guides and boat crew</li>
+                </ul>
+            </div>
+            
+            <div class="package-cta">
+                <a href="{{ url_for('booking') }}?tour=Naivasha+Day+Trip" class="btn">Book This Experience</a>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Aberdare Day Trip -->
+    <div class="daytrip-package">
+        <div class="package-header">
+            <h2>Aberdare National Park</h2>
+            <p>Misty forests and waterfalls in the highlands</p>
+            <p class="price">From USD 45 per person (min 6 pax)</p>
+        </div>
+        
+        <!-- Image Slider -->
+        <div class="slider-container" id="aberdare-slider">
+            <div class="slider">
+                <div class="slide">
+                    <img src="{{ url_for('static', filename='images/Aberdare-National-Park.webp') }}" alt="Aberdare Landscape">
+                </div>
+                <div class="slide">
+                    <img src="{{ url_for('static', filename='images/Aberdare-National-Park1.webp') }}" alt="Aberdare Waterfalls">
+                </div>
+                <div class="slide">
+                    <img src="{{ url_for('static', filename='images/Aberdare-National-Park-.webp') }}" alt="Aberdare Wildlife">
+                </div>
+            </div>
+            <div class="slider-nav">
+                <div class="slider-dot active" data-slide="0"></div>
+                <div class="slider-dot" data-slide="1"></div>
+                <div class="slider-dot" data-slide="2"></div>
+            </div>
+        </div>
+        
+        <div class="package-content">
+            <div class="package-section">
+                <h3>Experience</h3>
+                <p>Discover the breathtaking Aberdare ranges with their mist-covered forests, spectacular waterfalls, and diverse wildlife. This high-altitude park offers a completely different experience from Kenya's savannah parks, with lush vegetation and cool mountain air.</p>
+                
+                <div class="highlight-box">
+                    <strong>Eco-System:</strong> The Aberdare ranges are part of Kenya's water catchment system, feeding several major rivers and providing Nairobi with most of its water supply.
+                </div>
+            </div>
+            
+            <div class="package-section">
+                <h3>Activities</h3>
+                <ul>
+                    <li>Guided game drives through diverse habitats</li>
+                    <li>Visit to the stunning Chania and Karuru waterfalls</li>
+                    <li>Bird watching (over 250 species recorded)</li>
+                    <li>Short nature walks in designated areas</li>
+                    <li>Picnic lunch with mountain views</li>
+                </ul>
+            </div>
+            
+            <div class="package-section">
+                <h3>Includes</h3>
+                <ul>
+                    <li>Round-trip transport from Nyeri</li>
+                    <li>Game drives as per itinerary</li>
+                    <li>Professional guide services</li>
+                    <li>Bottled water </li>
+                </ul>
+            </div>
+            
+            <div class="package-section">
+                <h3>Excludes</h3>
+                <ul>
+                    <li>Park entry fees</li>
+					<li>Specialized hikes (available on request)</li>
+					<li>picnic lunch on request</li>
+					<li>Personal expenses</li>
+                    <li>Tips for guides and drivers</li>
+                </ul>
+            </div>
+            
+            <div class="package-cta">
+                <a href="{{ url_for('booking') }}?tour=Aberdare+Day+Trip" class="btn">Book This Experience</a>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block scripts %}
+<script>
+    // Initialize all sliders
+    document.addEventListener('DOMContentLoaded', function() {
+        // Function to handle slider functionality
+        function initSlider(sliderId) {
+            const slider = document.querySelector(`#${sliderId} .slider`);
+            const dots = document.querySelectorAll(`#${sliderId} .slider-dot`);
+            let currentSlide = 0;
+            const slideCount = 3; // We have 3 slides per slider
+            
+            // Auto-rotate slides every 4 seconds
+            const interval = setInterval(() => {
+                currentSlide = (currentSlide + 1) % slideCount;
+                updateSlider();
+            }, 4000);
+            
+            // Dot click navigation
+            dots.forEach(dot => {
+                dot.addEventListener('click', function() {
+                    currentSlide = parseInt(this.getAttribute('data-slide'));
+                    updateSlider();
+                    // Reset timer when manually navigating
+                    clearInterval(interval);
+                });
+            });
+            
+            function updateSlider() {
+                // Update slider position
+                slider.style.transform = `translateX(-${currentSlide * 33.33}%)`;
+                
+                // Update active dot
+                dots.forEach((dot, index) => {
+                    if (index === currentSlide) {
+                        dot.classList.add('active');
+                    } else {
+                        dot.classList.remove('active');
+                    }
+                });
+            }
+            
+            // Pause on hover
+            const sliderContainer = document.getElementById(sliderId);
+            sliderContainer.addEventListener('mouseenter', () => {
+                clearInterval(interval);
+            });
+            
+            sliderContainer.addEventListener('mouseleave', () => {
+                clearInterval(interval);
+                interval = setInterval(() => {
+                    currentSlide = (currentSlide + 1) % slideCount;
+                    updateSlider();
+                }, 4000);
+            });
+        }
+        
+        // Initialize all sliders
+        initSlider('nairobi-slider');
+        initSlider('naivasha-slider');
+        initSlider('aberdare-slider');
+        
+        // Animation for daytrip packages on scroll
+        const packages = document.querySelectorAll('.daytrip-package');
+        
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.style.opacity = 1;
+                    entry.target.style.transform = 'translateY(0)';
+                }
+            });
+        }, { threshold: 0.1 });
+        
+        packages.forEach(pkg => {
+            pkg.style.opacity = 0;
+            pkg.style.transform = 'translateY(30px)';
+            pkg.style.transition = 'opacity 0.6s ease, transform 0.6s ease';
+            observer.observe(pkg);
+        });
+    });
+</script>
+{% endblock %}

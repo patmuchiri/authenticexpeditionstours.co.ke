@@ -1,0 +1,588 @@
+{% extends "base.html" %}
+
+{% block title %}Home - Authentic Expeditions Tours | Kenya Safari Experts{% endblock %}
+
+{% block styles %}
+<style>
+    /* Hero Section */
+    .hero {
+        background: linear-gradient(rgba(26, 82, 118, 0.7), rgba(26, 82, 118, 0.7)), 
+                    url("{{ url_for('static', filename='images/hero-bg.jpg') }}");
+        background-size: cover;
+        background-position: center;
+        height: 90vh;
+        display: flex;
+        align-items: center;
+        text-align: center;
+        color: var(--white);
+        padding: 0 20px;
+        position: relative;
+        overflow: hidden;
+    }
+    
+    .hero::before {
+        content: '';
+        position: absolute;
+        bottom: 0;
+        left: 0;
+        width: 100%;
+        height: 100px;
+        background: linear-gradient(to top, var(--off-white), transparent);
+        z-index: 1;
+    }
+    
+    .hero-content {
+        max-width: 800px;
+        margin: 0 auto;
+        position: relative;
+        z-index: 2;
+        animation: fadeInUp 1s ease-out;
+    }
+    
+    .hero h1 {
+        font-size: 3.5rem;
+        margin-bottom: 20px;
+        text-shadow: 2px 2px 8px rgba(0,0,0,0.3);
+        line-height: 1.2;
+    }
+    
+    .hero p {
+        font-size: 1.3rem;
+        margin-bottom: 30px;
+        text-shadow: 1px 1px 3px rgba(0,0,0,0.3);
+    }
+    
+    .hero-btn {
+        padding: 15px 35px;
+        font-size: 1.1rem;
+        border-radius: 50px;
+        background-color: var(--accent);
+        color: var(--white);
+        text-transform: uppercase;
+        letter-spacing: 1px;
+        font-weight: 600;
+        transition: var(--transition);
+        display: inline-block;
+    }
+    
+    .hero-btn:hover {
+        background-color: var(--secondary);
+        transform: translateY(-5px);
+        box-shadow: 0 10px 25px rgba(211, 84, 0, 0.4);
+    }
+    
+    /* Intro Section */
+    .intro {
+        padding: 80px 0;
+        background-color: var(--off-white);
+        position: relative;
+    }
+    
+    .intro-container {
+        max-width: 1000px;
+        margin: 0 auto;
+        text-align: center;
+    }
+    
+    .intro h2 {
+        color: var(--primary);
+        margin-bottom: 30px;
+        font-size: 2.5rem;
+        position: relative;
+        display: inline-block;
+    }
+    
+    .intro h2::after {
+        content: '';
+        position: absolute;
+        bottom: -10px;
+        left: 50%;
+        transform: translateX(-50%);
+        width: 80px;
+        height: 3px;
+        background-color: var(--accent);
+    }
+    
+    .intro p {
+        font-size: 1.2rem;
+        line-height: 1.8;
+        color: var(--text-dark);
+        margin-bottom: 30px;
+    }
+    
+    /* Featured Tours */
+    .featured-tours {
+        padding: 80px 0;
+        background-color: var(--white);
+    }
+    
+    .section-title {
+        text-align: center;
+        margin-bottom: 50px;
+    }
+    
+    .section-title h2 {
+        color: var(--primary);
+        font-size: 2.5rem;
+        margin-bottom: 15px;
+    }
+    
+    .section-title p {
+        color: var(--text-dark);
+        font-size: 1.1rem;
+        max-width: 700px;
+        margin: 0 auto;
+    }
+    
+    .tours-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+        gap: 30px;
+    }
+    
+    .tour-card {
+        background-color: var(--white);
+        border-radius: 10px;
+        overflow: hidden;
+        box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+        transition: var(--transition);
+    }
+    
+    .tour-card:hover {
+        transform: translateY(-10px);
+        box-shadow: 0 15px 40px rgba(0,0,0,0.15);
+    }
+    
+    .tour-img {
+        height: 220px;
+        overflow: hidden;
+    }
+    
+    .tour-img img {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+        transition: transform 0.5s ease;
+    }
+    
+    .tour-card:hover .tour-img img {
+        transform: scale(1.1);
+    }
+    
+    .tour-info {
+        padding: 25px;
+    }
+    
+    .tour-info h3 {
+        color: var(--primary);
+        margin-bottom: 10px;
+        font-size: 1.4rem;
+    }
+    
+    .tour-info p {
+        color: var(--text-dark);
+        margin-bottom: 20px;
+        font-size: 0.95rem;
+    }
+    
+    .tour-meta {
+        display: flex;
+        justify-content: space-between;
+        margin-bottom: 20px;
+        color: var(--text-dark);
+    }
+    
+    .tour-meta span {
+        display: flex;
+        align-items: center;
+    }
+    
+    .tour-meta i {
+        margin-right: 5px;
+        color: var(--accent);
+    }
+    
+    /* Why Choose Us */
+    .why-choose {
+        padding: 80px 0;
+        background: linear-gradient(rgba(26, 82, 118, 0.05), rgba(26, 82, 118, 0.05));
+    }
+    
+    .features-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+        gap: 30px;
+    }
+    
+    .feature-card {
+        background-color: var(--white);
+        padding: 30px;
+        border-radius: 10px;
+        text-align: center;
+        box-shadow: 0 5px 20px rgba(0,0,0,0.05);
+        transition: var(--transition);
+    }
+    
+    .feature-card:hover {
+        transform: translateY(-10px);
+        box-shadow: 0 15px 30px rgba(0,0,0,0.1);
+    }
+    
+    .feature-icon {
+        width: 80px;
+        height: 80px;
+        background-color: rgba(243, 156, 18, 0.1);
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        margin: 0 auto 20px;
+        font-size: 30px;
+        color: var(--accent);
+    }
+    
+    .feature-card h3 {
+        color: var(--primary);
+        margin-bottom: 15px;
+    }
+    
+    /* Testimonials */
+    .testimonials {
+        padding: 80px 0;
+        background-color: var(--primary);
+        color: var(--white);
+    }
+    
+    .testimonial-slider {
+        max-width: 800px;
+        margin: 0 auto;
+    }
+    
+    .testimonial {
+        text-align: center;
+        padding: 0 20px;
+    }
+    
+    .testimonial-text {
+        font-size: 1.2rem;
+        font-style: italic;
+        margin-bottom: 30px;
+        position: relative;
+    }
+    
+    .testimonial-text::before,
+    .testimonial-text::after {
+        content: '"';
+        font-size: 3rem;
+        color: rgba(255,255,255,0.2);
+        position: absolute;
+    }
+    
+    .testimonial-text::before {
+        top: -20px;
+        left: -15px;
+    }
+    
+    .testimonial-text::after {
+        bottom: -40px;
+        right: -15px;
+    }
+    
+    .testimonial-author {
+        font-weight: 600;
+        margin-top: 20px;
+    }
+    
+    /* Call to Action */
+    .cta {
+        padding: 80px 0;
+        background: linear-gradient(135deg, var(--primary) 0%, var(--nature-green) 100%);
+        color: var(--white);
+        text-align: center;
+    }
+    
+    .cta h2 {
+        font-size: 2.5rem;
+        margin-bottom: 20px;
+    }
+    
+    .cta p {
+        font-size: 1.2rem;
+        max-width: 700px;
+        margin: 0 auto 30px;
+    }
+    
+    /* Animations */
+    @keyframes fadeInUp {
+        from {
+            opacity: 0;
+            transform: translateY(30px);
+        }
+        to {
+            opacity: 1;
+            transform: translateY(0);
+        }
+    }
+    
+    /* Responsive Styles */
+    @media (max-width: 992px) {
+        .hero h1 {
+            font-size: 3rem;
+        }
+    }
+    
+    @media (max-width: 768px) {
+        .hero {
+            height: 80vh;
+        }
+        
+        .hero h1 {
+            font-size: 2.5rem;
+        }
+        
+        .hero p {
+            font-size: 1.1rem;
+        }
+        
+        .intro h2, .section-title h2, .cta h2 {
+            font-size: 2rem;
+        }
+    }
+    
+    @media (max-width: 576px) {
+        .hero {
+            height: 70vh;
+        }
+        
+        .hero h1 {
+            font-size: 2rem;
+        }
+        
+        .hero-btn {
+            padding: 12px 25px;
+            font-size: 1rem;
+        }
+    }
+</style>
+{% endblock %}
+
+{% block content %}
+<!-- Hero Section -->
+<section class="hero">
+    <div class="hero-content">
+        <h1>Discover Kenya's Wild Heart</h1>
+        <p>Unforgettable safari experiences crafted with passion and expertise</p>
+        <div class="hero-btns">
+            <a href="{{ url_for('all_tours') }}" class="hero-btn">Explore Tours</a>
+            <a href="{{ url_for('contact') }}" class="hero-btn btn-outline" style="margin-left: 15px;">Contact Us</a>
+        </div>
+    </div>
+</section>
+
+<!-- Introduction Section -->
+<section class="intro">
+    <div class="intro-container">
+        <h2>Welcome to Authentic Expeditions</h2>
+        <p>Established in 2023 in the heart of Nyeri, Kenya, Authentic Expeditions is your premier gateway to East Africa's most breathtaking landscapes and rich cultural heritage. We specialize in crafting tailor-made safari experiences that go beyond the ordinary, creating journeys that inspire, educate, and leave lasting memories.</p>
+        <p>Our team of passionate local experts combines deep knowledge with personalized service to ensure your African adventure is nothing short of extraordinary.</p>
+    </div>
+</section>
+
+<!-- Featured Tours Section -->
+<section class="featured-tours">
+    <div class="container">
+        <div class="section-title">
+            <h2>Featured Safari Packages</h2>
+            <p>Explore our handpicked selection of unforgettable Kenyan adventures</p>
+        </div>
+        
+        <div class="tours-grid">
+            <div class="tour-card animate-on-scroll">
+                <div class="tour-img">
+                    <img src="{{ url_for('static', filename='images/masai-mara.jpg') }}" alt="Masai Mara Safari">
+                </div>
+                <div class="tour-info">
+                    <h3>Masai Mara Adventure</h3>
+                    <p>Witness the Great Migration in Kenya's most famous wildlife reserve with our expertly guided 3-day safari.</p>
+                    <div class="tour-meta">
+                        <span><i class="fas fa-clock"></i> 3 Days</span>
+                        <span><i class="fas fa-dollar-sign"></i> From $600</span>
+                    </div>
+                    <a href="{{ url_for('all_tours') }}"class="btn">View Details</a>
+                </div>
+            </div>
+            
+            <div class="tour-card animate-on-scroll">
+                <div class="tour-img">
+                    <img src="{{ url_for('static', filename='images/amboseli.jpg') }}" alt="Amboseli Safari">
+                </div>
+                <div class="tour-info">
+                    <h3>Amboseli Expedition</h3>
+                    <p>Marvel at elephants with Mount Kilimanjaro as your backdrop in this breathtaking 3-day safari experience.</p>
+                    <div class="tour-meta">
+                        <span><i class="fas fa-clock"></i> 3 Days</span>
+                        <span><i class="fas fa-dollar-sign"></i> From $550</span>
+                    </div>
+                    <a href="{{ url_for('all_tours') }}"class="btn">View Details</a>
+                </div>
+            </div>
+            
+            <div class="tour-card animate-on-scroll">
+                <div class="tour-img">
+                    <img src="{{ url_for('static', filename='images/samburu.jpg') }}" alt="Samburu Safari">
+                </div>
+                <div class="tour-info">
+                    <h3>Samburu Wilderness</h3>
+                    <p>Discover the unique wildlife of Northern Kenya in this 3-day adventure off the beaten path.</p>
+                    <div class="tour-meta">
+                        <span><i class="fas fa-clock"></i> 3 Days</span>
+                        <span><i class="fas fa-dollar-sign"></i> From $650</span>
+                    </div>
+                    <a href="{{ url_for('all_tours') }}" class="btn">View Details</a>
+                </div>
+            </div>
+        </div>
+        
+        <div style="text-align: center; margin-top: 40px;">
+            <a href="{{ url_for('all_tours') }}" class="btn">View All Safari Packages</a>
+        </div>
+    </div>
+</section>
+
+<!-- Why Choose Us Section -->
+<section class="why-choose">
+    <div class="container">
+        <div class="section-title">
+            <h2>Why Choose Authentic Expeditions?</h2>
+            <p>We go beyond typical tours to deliver truly authentic African experiences</p>
+        </div>
+        
+        <div class="features-grid">
+            <div class="feature-card animate-on-scroll">
+                <div class="feature-icon">
+                    <i class="fas fa-map-marked-alt"></i>
+                </div>
+                <h3>Local Expertise</h3>
+                <p>Our guides are Kenyan-born experts with unmatched knowledge of wildlife, culture, and hidden gems.</p>
+            </div>
+            
+            <div class="feature-card animate-on-scroll">
+                <div class="feature-icon">
+                    <i class="fas fa-heart"></i>
+                </div>
+                <h3>Personalized Service</h3>
+                <p>We craft each itinerary to match your interests, pace, and travel style for a truly bespoke experience.</p>
+            </div>
+            
+            <div class="feature-card animate-on-scroll">
+                <div class="feature-icon">
+                    <i class="fas fa-leaf"></i>
+                </div>
+                <h3>Sustainable Tourism</h3>
+                <p>We're committed to eco-friendly practices and supporting local communities through our operations.</p>
+            </div>
+            
+            <div class="feature-card animate-on-scroll">
+                <div class="feature-icon">
+                    <i class="fas fa-shield-alt"></i>
+                </div>
+                <h3>Safety First</h3>
+                <p>Your wellbeing is our priority with well-maintained vehicles and comprehensive safety protocols.</p>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Testimonials Section -->
+<section class="testimonials">
+    <div class="container">
+        <div class="section-title">
+            <h2 style="color: var(--white);">Traveler Stories</h2>
+            <p style="color: rgba(255,255,255,0.8);">Hear what our guests say about their experiences</p>
+        </div>
+        
+        <div class="testimonial-slider">
+            <div class="testimonial">
+                <div class="testimonial-text">
+                    Our Masai Mara safari with Authentic Expeditions exceeded all expectations. The guides' knowledge of animal behavior made each game drive an educational adventure. We saw the Big Five within our first two days!
+                </div>
+                <div class="testimonial-author">— Sarah & Michael, USA</div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Call to Action Section -->
+<section class="cta">
+    <div class="container">
+        <h2>Ready for Your African Adventure?</h2>
+        <p>Contact us today to start planning your dream safari. Our team is ready to create a personalized itinerary just for you.</p>
+        <div style="display: flex; justify-content: center; gap: 20px; flex-wrap: wrap;">
+            <a href="{{ url_for('contact') }}" class="hero-btn">Get in Touch</a>
+            <a href="{{ url_for('booking') }}" class="hero-btn btn-outline">Book Now</a>
+        </div>
+    </div>
+</section>
+{% endblock %}
+
+{% block scripts %}
+<script>
+    // Testimonial Slider
+    document.addEventListener('DOMContentLoaded', function() {
+        const testimonials = [
+            {
+                text: "Our Masai Mara safari with Authentic Expeditions exceeded all expectations. The guides' knowledge of animal behavior made each game drive an educational adventure. We saw the Big Five within our first two days!",
+                author: "— Sarah & Michael, USA"
+            },
+            {
+                text: "The Samburu tour was absolutely magical. Our guide knew exactly where to find the rare species, and the cultural visit to the local village was a highlight. Authentic Expeditions delivered an experience we'll cherish forever.",
+                author: "— Thomas, Germany"
+            },
+            {
+                text: "As a solo female traveler, I felt completely safe and well taken care of throughout my Amboseli trip. The team went above and beyond to ensure I had the best possible experience. Can't wait to return!",
+                author: "— Priya, India"
+            }
+        ];
+        
+        let currentTestimonial = 0;
+        const testimonialElement = document.querySelector('.testimonial-text');
+        const authorElement = document.querySelector('.testimonial-author');
+        
+        function changeTestimonial() {
+            testimonialElement.style.opacity = 0;
+            authorElement.style.opacity = 0;
+            
+            setTimeout(() => {
+                currentTestimonial = (currentTestimonial + 1) % testimonials.length;
+                testimonialElement.textContent = testimonials[currentTestimonial].text;
+                authorElement.textContent = testimonials[currentTestimonial].author;
+                
+                testimonialElement.style.opacity = 1;
+                authorElement.style.opacity = 1;
+            }, 500);
+        }
+        
+        // Change testimonial every 5 seconds
+        setInterval(changeTestimonial, 5000);
+        
+        // Animation on scroll for elements
+        const animateElements = document.querySelectorAll('.animate-on-scroll');
+        
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.style.opacity = 1;
+                    entry.target.style.transform = 'translateY(0)';
+                }
+            });
+        }, { threshold: 0.1 });
+        
+        animateElements.forEach(element => {
+            element.style.opacity = 0;
+            element.style.transform = 'translateY(30px)';
+            element.style.transition = 'opacity 0.6s ease, transform 0.6s ease';
+            observer.observe(element);
+        });
+    });
+</script>
+{% endblock %}

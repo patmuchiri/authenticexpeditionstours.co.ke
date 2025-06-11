@@ -1,0 +1,238 @@
+{% extends "base.html" %}
+
+{% block title %}Photo Gallery - Authentic Expeditions Tours{% endblock %}
+
+{% block styles %}
+<style>
+    /* Gallery Page Styles */
+    .gallery-hero {
+        background: linear-gradient(rgba(26, 82, 118, 0.7), rgba(26, 82, 118, 0.7)), 
+                    url("{{ url_for('static', filename='images/gallery-hero.jpg') }}");
+        background-size: cover;
+        background-position: center;
+        height: 50vh;
+        display: flex;
+        align-items: center;
+        text-align: center;
+        color: var(--white);
+        margin-bottom: 60px;
+    }
+    
+    .gallery-hero-content {
+        max-width: 800px;
+        margin: 0 auto;
+        padding: 0 20px;
+    }
+    
+    .gallery-hero h1 {
+        font-size: 3rem;
+        margin-bottom: 20px;
+        text-shadow: 2px 2px 8px rgba(0,0,0,0.3);
+    }
+    
+    .gallery-container {
+        max-width: 1200px;
+        margin: 0 auto;
+        padding: 0 20px;
+    }
+    
+    .gallery-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+        gap: 20px;
+        margin-bottom: 40px;
+    }
+    
+    .gallery-item {
+        position: relative;
+        border-radius: 8px;
+        overflow: hidden;
+        box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+        transition: var(--transition);
+        height: 250px;
+    }
+    
+    .gallery-item:hover {
+        transform: translateY(-5px);
+        box-shadow: 0 10px 25px rgba(0,0,0,0.2);
+    }
+    
+    .gallery-item img {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+        transition: transform 0.5s ease;
+    }
+    
+    .gallery-item:hover img {
+        transform: scale(1.05);
+    }
+    
+    .gallery-caption {
+        position: absolute;
+        bottom: 0;
+        left: 0;
+        right: 0;
+        background: linear-gradient(to top, rgba(0,0,0,0.7), transparent);
+        color: var(--white);
+        padding: 15px;
+        opacity: 0;
+        transition: var(--transition);
+    }
+    
+    .gallery-item:hover .gallery-caption {
+        opacity: 1;
+    }
+    
+    .gallery-cta {
+        text-align: center;
+        margin: 40px 0;
+    }
+    
+    /* Responsive Styles */
+    @media (max-width: 768px) {
+        .gallery-hero h1 {
+            font-size: 2.5rem;
+        }
+        
+        .gallery-grid {
+            grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+        }
+    }
+    
+    @media (max-width: 576px) {
+        .gallery-hero {
+            height: 40vh;
+        }
+        
+        .gallery-hero h1 {
+            font-size: 2rem;
+        }
+    }
+</style>
+{% endblock %}
+
+{% block content %}
+<!-- Hero Section -->
+<section class="gallery-hero">
+    <div class="gallery-hero-content">
+        <h1>Our Photo Gallery</h1>
+        <p>Experience Kenya's beauty through our lens</p>
+    </div>
+</section>
+
+<div class="gallery-container">
+    <div class="gallery-grid">
+        <!-- Masai Mara Images -->
+        <div class="gallery-item">
+            <img src="{{ url_for('static', filename='images/masai-mara.jpg') }}" alt="Masai Mara Landscape">
+            <div class="gallery-caption">Masai Mara National Reserve</div>
+        </div>
+        
+        <div class="gallery-item">
+            <img src="{{ url_for('static', filename='images/maasai-mara.jpg') }}" alt="Masai Mara Wildlife">
+            <div class="gallery-caption">Wildlife in Masai Mara</div>
+        </div>
+        
+        <div class="gallery-item">
+            <img src="{{ url_for('static', filename='images/SarovaMaraGameCamp.jpg') }}" alt="Sarova Mara Game Camp">
+            <div class="gallery-caption">Sarova Mara Game Camp</div>
+        </div>
+        
+        <!-- Amboseli Images -->
+        <div class="gallery-item">
+            <img src="{{ url_for('static', filename='images/amboseli.jpg') }}" alt="Amboseli Landscape">
+            <div class="gallery-caption">Amboseli with Kilimanjaro</div>
+        </div>
+        
+        <div class="gallery-item">
+            <img src="{{ url_for('static', filename='images/amboselicamp.jpg') }}" alt="Amboseli Camp">
+            <div class="gallery-caption">Amboseli Safari Camp</div>
+        </div>
+        
+        <div class="gallery-item">
+            <img src="{{ url_for('static', filename='images/amboselisopalodge.jpg') }}" alt="Amboseli Sopa Lodge">
+            <div class="gallery-caption">Amboseli Sopa Lodge</div>
+        </div>
+        
+        <!-- Samburu Images -->
+        <div class="gallery-item">
+            <img src="{{ url_for('static', filename='images/samburu.jpg') }}" alt="Samburu Landscape">
+            <div class="gallery-caption">Samburu National Reserve</div>
+        </div>
+        
+        <div class="gallery-item">
+            <img src="{{ url_for('static', filename='images/mtololokwe.jpg') }}" alt="Mt. Ololokwe">
+            <div class="gallery-caption">Mt. Ololokwe Viewpoint</div>
+        </div>
+        
+        <div class="gallery-item">
+            <img src="{{ url_for('static', filename='images/zebrasamburu.jpg') }}" alt="Samburu Zebras">
+            <div class="gallery-caption">Grevy's Zebras in Samburu</div>
+        </div>
+        
+        <!-- Nairobi Day Trip Images -->
+        <div class="gallery-item">
+            <img src="{{ url_for('static', filename='images/NairobiNationalPark.jpg') }}" alt="Nairobi National Park">
+            <div class="gallery-caption">Wildlife in Nairobi Park</div>
+        </div>
+        
+        <div class="gallery-item">
+            <img src="{{ url_for('static', filename='images/nairobipark.webp') }}" alt="Nairobi Park Wildlife">
+            <div class="gallery-caption">Nairobi National Park</div>
+        </div>
+        
+        <!-- Aberdare Images -->
+        <div class="gallery-item">
+            <img src="{{ url_for('static', filename='images/Aberdare-National-Park1.webp') }}" alt="Aberdare Landscape">
+            <div class="gallery-caption">Aberdare National Park</div>
+        </div>
+        
+        <div class="gallery-item">
+            <img src="{{ url_for('static', filename='images/Aberdare-National-Park.webp') }}" alt="Aberdare Waterfalls">
+            <div class="gallery-caption">Waterfalls in Aberdare</div>
+        </div>
+        
+        <!-- Naivasha Images -->
+        <div class="gallery-item">
+            <img src="{{ url_for('static', filename='images/CrescentIslandboat.jpg') }}" alt="Boat Ride on Lake Naivasha">
+            <div class="gallery-caption">Boat Ride on Lake Naivasha</div>
+        </div>
+        
+        <div class="gallery-item">
+            <img src="{{ url_for('static', filename='images/crescentislandnaivasha.jpg') }}" alt="Crescent Island Wildlife">
+            <div class="gallery-caption">Wildlife on Crescent Island</div>
+        </div>
+    </div>
+    
+    <div class="gallery-cta">
+        <a href="{{ url_for('all_tours') }}" class="btn">Explore Our Tours</a>
+        <a href="{{ url_for('destinations') }}" class="btn btn-outline" style="margin-left: 15px;">View Day Trips</a>
+    </div>
+</div>
+{% endblock %}
+
+{% block scripts %}
+<script>
+    // Animation for gallery items on scroll
+    document.addEventListener('DOMContentLoaded', function() {
+        const galleryItems = document.querySelectorAll('.gallery-item');
+        
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.style.opacity = 1;
+                    entry.target.style.transform = 'translateY(0)';
+                }
+            });
+        }, { threshold: 0.1 });
+        
+        galleryItems.forEach((item, index) => {
+            item.style.opacity = 0;
+            item.style.transform = 'translateY(20px)';
+            item.style.transition = `opacity 0.5s ease, transform 0.5s ease ${index * 0.1}s`;
+            observer.observe(item);
+        });
+    });
+</script>
+{% endblock %}

@@ -1,0 +1,304 @@
+{% extends "base.html" %}
+
+{% block title %}About Us - Authentic Expeditions Tours | Kenya Safari Experts{% endblock %}
+
+{% block styles %}
+<style>
+    /* About Page Styles */
+    .about-hero {
+        background: linear-gradient(rgba(26, 82, 118, 0.7), rgba(26, 82, 118, 0.7)), 
+                    url("{{ url_for('static', filename='images/about.jpg') }}");
+        background-size: cover;
+        background-position: center;
+        height: 60vh;
+        display: flex;
+        align-items: center;
+        text-align: center;
+        color: var(--white);
+        margin-bottom: 60px;
+    }
+    
+    .about-hero-content {
+        max-width: 800px;
+        margin: 0 auto;
+        padding: 0 20px;
+    }
+    
+    .about-hero h1 {
+        font-size: 3rem;
+        margin-bottom: 20px;
+        text-shadow: 2px 2px 8px rgba(0,0,0,0.3);
+    }
+    
+    .about-container {
+        max-width: 1000px;
+        margin: 0 auto;
+        padding: 0 20px;
+    }
+    
+    .about-section {
+        margin-bottom: 50px;
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 40px;
+        align-items: center;
+    }
+    
+    .about-section.reverse {
+        grid-template-columns: 1fr 1fr;
+        direction: rtl;
+    }
+    
+    .about-section.reverse > * {
+        direction: ltr;
+    }
+    
+    .about-text {
+        padding: 20px;
+    }
+    
+    .about-section h2 {
+        color: var(--primary);
+        margin-bottom: 20px;
+        font-size: 2rem;
+        position: relative;
+        display: inline-block;
+    }
+    
+    .about-section h2::after {
+        content: '';
+        position: absolute;
+        bottom: -10px;
+        left: 0;
+        width: 60px;
+        height: 3px;
+        background-color: var(--accent);
+    }
+    
+    .about-section p {
+        margin-bottom: 20px;
+        font-size: 1.1rem;
+        line-height: 1.8;
+    }
+    
+    .about-section ul {
+        list-style: none;
+        margin: 25px 0;
+    }
+    
+    .about-section ul li {
+        margin-bottom: 15px;
+        padding-left: 30px;
+        position: relative;
+        font-size: 1.1rem;
+    }
+    
+    .about-section ul li::before {
+        content: '\f00c';
+        font-family: 'Font Awesome 6 Free';
+        font-weight: 900;
+        color: var(--accent);
+        position: absolute;
+        left: 0;
+        top: 2px;
+    }
+    
+    .about-image {
+        border-radius: 10px;
+        overflow: hidden;
+        box-shadow: 0 15px 40px rgba(0,0,0,0.1);
+        transition: var(--transition);
+    }
+    
+    .about-image:hover {
+        transform: translateY(-5px);
+        box-shadow: 0 20px 50px rgba(0,0,0,0.15);
+    }
+    
+    .about-image img {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+        transition: transform 0.5s ease;
+    }
+    
+    .about-image:hover img {
+        transform: scale(1.05);
+    }
+    
+    .values-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+        gap: 30px;
+        margin-top: 40px;
+    }
+    
+    .value-card {
+        background-color: var(--white);
+        padding: 30px;
+        border-radius: 10px;
+        box-shadow: 0 10px 30px rgba(0,0,0,0.05);
+        transition: var(--transition);
+    }
+    
+    .value-card:hover {
+        transform: translateY(-10px);
+        box-shadow: 0 15px 40px rgba(0,0,0,0.1);
+    }
+    
+    .value-icon {
+        width: 70px;
+        height: 70px;
+        background-color: rgba(243, 156, 18, 0.1);
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        margin-bottom: 20px;
+        font-size: 28px;
+        color: var(--accent);
+    }
+    
+    .value-card h3 {
+        color: var(--primary);
+        margin-bottom: 15px;
+    }
+    
+    /* Responsive Styles */
+    @media (max-width: 768px) {
+        .about-section, .about-section.reverse {
+            grid-template-columns: 1fr;
+            direction: ltr;
+        }
+        
+        .about-hero h1 {
+            font-size: 2.5rem;
+        }
+        
+        .about-section h2 {
+            font-size: 1.8rem;
+        }
+    }
+    
+    @media (max-width: 576px) {
+        .about-hero {
+            height: 50vh;
+        }
+        
+        .about-hero h1 {
+            font-size: 2rem;
+        }
+    }
+</style>
+{% endblock %}
+
+{% block content %}
+<!-- Hero Section -->
+<section class="about-hero">
+    <div class="about-hero-content">
+        <h1>Our Story</h1>
+        <p>Discover the passion behind Authentic Expeditions</p>
+    </div>
+</section>
+
+<div class="about-container">
+    <!-- Mission Section -->
+    <section class="about-section">
+        <div class="about-text">
+            <h2>Our Mission</h2>
+            <p>At Authentic Expeditions, we're dedicated to providing personalized and enriching travel experiences that showcase Kenya's spectacular cultural and natural heritage while delivering exceptional customer satisfaction at every turn.</p>
+            <p>We believe travel should be transformative, creating connections between people, cultures, and the natural world that last a lifetime.</p>
+        </div>
+        <div class="about-image">
+            <img src="{{ url_for('static', filename='images/mission.jpg') }}" alt="Our Mission">
+        </div>
+    </section>
+
+    <!-- Vision Section -->
+    <section class="about-section reverse">
+        <div class="about-text">
+            <h2>Our Vision</h2>
+            <p>We aspire to be recognized as Kenya's premier travel company, renowned for crafting authentic, immersive, and sustainable travel experiences that set the standard for responsible tourism in East Africa.</p>
+            <p>Our goal is to expand our impact across the region while maintaining the personal touch that defines the Authentic Expeditions experience.</p>
+        </div>
+        <div class="about-image">
+            <img src="{{ url_for('static', filename='images/vision.jpg') }}" alt="Our Vision">
+        </div>
+    </section>
+
+    <!-- Core Values Section -->
+    <section class="about-section">
+        <div class="about-text">
+            <h2>Our Core Values</h2>
+            <p>These fundamental principles guide every decision we make and every experience we create:</p>
+            
+            <div class="values-grid">
+                <div class="value-card">
+                    <div class="value-icon">
+                        <i class="fas fa-users"></i>
+                    </div>
+                    <h3>Customer-Centric</h3>
+                    <p>We prioritize our clients' needs and consistently strive to exceed their expectations with personalized service.</p>
+                </div>
+                
+                <div class="value-card">
+                    <div class="value-icon">
+                        <i class="fas fa-leaf"></i>
+                    </div>
+                    <h3>Sustainability</h3>
+                    <p>We're committed to eco-friendly practices that protect Kenya's natural beauty for future generations.</p>
+                </div>
+                
+                <div class="value-card">
+                    <div class="value-icon">
+                        <i class="fas fa-globe-africa"></i>
+                    </div>
+                    <h3>Cultural Appreciation</h3>
+                    <p>We celebrate and promote Kenya's rich traditions through respectful, authentic cultural exchanges.</p>
+                </div>
+            </div>
+        </div>
+        <div class="about-image">
+            <img src="{{ url_for('static', filename='images/values.jpg') }}" alt="Our Values">
+        </div>
+    </section>
+
+    <!-- History Section -->
+    <section class="about-section reverse">
+        <div class="about-text">
+            <h2>Our History</h2>
+            <p>Founded in 2023 in Nyeri, Kenya, Authentic Expeditions began as a passionate endeavor by local safari experts who wanted to share their deep knowledge and love for Kenya's breathtaking landscapes and vibrant cultures.</p>
+            <p>What started as a small team of guides has grown into a respected travel company, but we've never lost our original commitment to authentic, personalized safari experiences that benefit both travelers and local communities.</p>
+            <p>Today, we're proud to welcome guests from around the world while maintaining the personal touch and local expertise that set us apart.</p>
+        </div>
+        <div class="about-image">
+            <img src="{{ url_for('static', filename='images/history.jpg') }}" alt="Our History">
+        </div>
+    </section>
+</div>
+{% endblock %}
+
+{% block scripts %}
+<script>
+    // Animation for about sections on scroll
+    document.addEventListener('DOMContentLoaded', function() {
+        const aboutSections = document.querySelectorAll('.about-section');
+        
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.style.opacity = 1;
+                    entry.target.style.transform = 'translateY(0)';
+                }
+            });
+        }, { threshold: 0.1 });
+        
+        aboutSections.forEach(section => {
+            section.style.opacity = 0;
+            section.style.transform = 'translateY(30px)';
+            section.style.transition = 'opacity 0.6s ease, transform 0.6s ease';
+            observer.observe(section);
+        });
+    });
+</script>
+{% endblock %}
