@@ -35,8 +35,8 @@
             </div>
         </div>
 
-        <!-- Booking Form - Now submits directly to Flask -->
-        <form id="bookingForm" action="{{ url_for('booking') }}" method="POST" class="booking-form">
+        <!-- Booking Form -->
+        <form id="bookingForm" action="#" method="POST" class="booking-form">
             <div class="form-header">
                 <h3>Tour Reservation</h3>
                 <p>All fields are required unless noted</p>
@@ -67,9 +67,9 @@
                     <label for="tour">Select Your Adventure</label>
                     <select id="tour" name="tour" required>
                         <option value="">-- Choose a Tour --</option>
-                        {% for tour in tours %}
-                        <option value="{{ tour.title }}">{{ tour.title }}</option>
-                        {% endfor %}
+                        <option value="Masai Mara">Masai Mara Safari</option>
+                        <option value="Amboseli">Amboseli National Park</option>
+                        <option value="Samburu">Samburu National Reserve</option>
                         <option value="Nairobi Day Trip">Nairobi Day Trip</option>
                         <option value="Naivasha">Naivasha (Lake & Island)</option>
                         <option value="Aberdare">Aberdare National Park</option>
@@ -108,6 +108,59 @@
         </form>
     </div>
 </div>
+
+<!-- Success Modal -->
+<div id="successModal" class="modal">
+    <div class="modal-content">
+        <div class="modal-icon">
+            <i class="fas fa-check-circle"></i>
+        </div>
+        <h3>Booking Received!</h3>
+        <p>Thank you for choosing Authentic Expeditions. Your adventure request has been submitted successfully.</p>
+        <p>Our safari specialist will contact you within 24 hours to confirm details and answer any questions.</p>
+        <button id="closeModal" class="modal-btn">Continue Exploring</button>
+    </div>
+</div>
+
+<script>
+    document.getElementById('bookingForm').addEventListener('submit', function(e) {
+        e.preventDefault();
+        
+        // Form validation
+        const requiredFields = ['name', 'email', 'phone', 'tour', 'date', 'guests'];
+        let isValid = true;
+        
+        requiredFields.forEach(field => {
+            const element = document.getElementById(field);
+            if (!element.value.trim()) {
+                element.classList.add('error');
+                isValid = false;
+            } else {
+                element.classList.remove('error');
+            }
+        });
+        
+        if (!isValid) {
+            alert("Please fill in all required fields.");
+            return;
+        }
+        
+        // Email validation
+        const email = document.getElementById('email').value;
+        if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
+            document.getElementById('email').classList.add('error');
+            alert("Please enter a valid email address.");
+            return;
+        }
+        
+        // Show success modal
+        document.getElementById('successModal').style.display = 'flex';
+    });
+    
+    document.getElementById('closeModal').addEventListener('click', function() {
+        document.getElementById('successModal').style.display = 'none';
+    });
+</script>
 
 <style>
     /* Color Variables from base.html */
@@ -372,6 +425,64 @@
         margin-right: 5px;
     }
     
+    /* Modal Styles */
+    .modal {
+        display: none;
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background: rgba(0, 0, 0, 0.7);
+        z-index: 1000;
+        align-items: center;
+        justify-content: center;
+        animation: fadeIn 0.3s ease;
+    }
+    
+    .modal-content {
+        background: var(--white);
+        padding: 3rem;
+        border-radius: 10px;
+        max-width: 500px;
+        text-align: center;
+        position: relative;
+        animation: slideUp 0.4s ease;
+    }
+    
+    .modal-icon {
+        font-size: 4rem;
+        color: var(--nature-green);
+        margin-bottom: 1.5rem;
+    }
+    
+    .modal h3 {
+        font-size: 1.8rem;
+        color: var(--primary);
+        margin-bottom: 1rem;
+    }
+    
+    .modal p {
+        color: var(--text-dark);
+        margin-bottom: 1.5rem;
+        line-height: 1.6;
+    }
+    
+    .modal-btn {
+        background: var(--primary);
+        color: var(--white);
+        border: none;
+        padding: 12px 25px;
+        font-size: 1rem;
+        border-radius: 6px;
+        cursor: pointer;
+        transition: all 0.3s ease;
+    }
+    
+    .modal-btn:hover {
+        background: var(--accent);
+    }
+    
     /* Animations */
     @keyframes fadeInDown {
         from {
@@ -388,6 +499,22 @@
         from {
             opacity: 0;
             transform: translateY(30px);
+        }
+        to {
+            opacity: 1;
+            transform: translateY(0);
+        }
+    }
+    
+    @keyframes fadeIn {
+        from { opacity: 0; }
+        to { opacity: 1; }
+    }
+    
+    @keyframes slideUp {
+        from {
+            opacity: 0;
+            transform: translateY(50px);
         }
         to {
             opacity: 1;

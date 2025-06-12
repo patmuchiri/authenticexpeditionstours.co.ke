@@ -51,6 +51,115 @@
             font-weight: 600;
             line-height: 1.3;
         }
+
+        /* ==================== */
+        /* Enhanced Flash Messages */
+        /* ==================== */
+        .flash-container {
+            position: fixed;
+            top: 100px;
+            right: 20px;
+            z-index: 9999;
+            max-width: 350px;
+            width: 100%;
+        }
+
+        .flash-message {
+            padding: 15px 25px;
+            margin-bottom: 15px;
+            border-radius: 5px;
+            color: white;
+            font-weight: 500;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            animation: slideInRight 0.3s ease forwards, fadeOut 0.5s ease 5s forwards;
+            transform: translateX(150%);
+            opacity: 0;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .flash-message::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 5px;
+            height: 100%;
+        }
+
+        .flash-success {
+            background-color: var(--nature-green);
+        }
+
+        .flash-success::before {
+            background-color: #2ecc71;
+        }
+
+        .flash-error {
+            background-color: var(--sunset-red);
+        }
+
+        .flash-error::before {
+            background-color: #c0392b;
+        }
+
+        .flash-info {
+            background-color: var(--sky-blue);
+        }
+
+        .flash-info::before {
+            background-color: #2980b9;
+        }
+
+        .flash-warning {
+            background-color: var(--accent);
+        }
+
+        .flash-warning::before {
+            background-color: #e67e22;
+        }
+
+        .flash-message i {
+            margin-right: 10px;
+            font-size: 1.2rem;
+        }
+
+        .flash-close {
+            margin-left: 15px;
+            cursor: pointer;
+            background: none;
+            border: none;
+            color: white;
+            font-size: 1.2rem;
+            opacity: 0.8;
+            transition: var(--transition);
+        }
+
+        .flash-close:hover {
+            opacity: 1;
+            transform: scale(1.1);
+        }
+
+        @keyframes slideInRight {
+            to {
+                transform: translateX(0);
+                opacity: 1;
+            }
+        }
+
+        @keyframes fadeOut {
+            to {
+                opacity: 0;
+                transform: translateX(150%);
+            }
+        }
+
+        /* ==================== */
+        /* Rest of your existing styles */
+        /* ==================== */
         
         /* Header Styles */
         header {
@@ -203,30 +312,6 @@
             padding: 0 20px;
         }
         
-        /* Flash Messages */
-        .flash-message {
-            max-width: 800px;
-            margin: 20px auto;
-            padding: 15px 25px;
-            border-radius: 8px;
-            font-weight: 500;
-            text-align: center;
-            box-shadow: var(--shadow);
-            animation: slideDown 0.5s ease-out;
-        }
-        
-        .flash-success {
-            background-color: rgba(46, 204, 113, 0.2);
-            color: #27ae60;
-            border-left: 5px solid #27ae60;
-        }
-        
-        .flash-error {
-            background-color: rgba(231, 76, 60, 0.2);
-            color: #c0392b;
-            border-left: 5px solid #c0392b;
-        }
-        
         /* Footer */
         footer {
             background: linear-gradient(135deg, var(--primary) 0%, var(--text-dark) 100%);
@@ -345,6 +430,10 @@
                 padding: 10px 12px;
                 font-size: 0.9rem;
             }
+
+            .flash-container {
+                max-width: 300px;
+            }
         }
         
         @media (max-width: 768px) {
@@ -406,6 +495,12 @@
             main {
                 margin-top: 80px;
             }
+
+            .flash-container {
+                top: 80px;
+                right: 10px;
+                max-width: calc(100% - 20px);
+            }
         }
         
         @media (max-width: 480px) {
@@ -419,6 +514,11 @@
             
             .footer-container {
                 grid-template-columns: 1fr;
+            }
+
+            .flash-message {
+                padding: 12px 20px;
+                font-size: 0.9rem;
             }
         }
     </style>
@@ -455,19 +555,25 @@
         </div>
     </header>
 
-    <!-- Main Content -->
-    <main>
-        <!-- Flash Messages -->
+    <!-- Flash Messages Container -->
+    <div class="flash-container">
         {% with messages = get_flashed_messages(with_categories=true) %}
             {% if messages %}
                 {% for category, message in messages %}
                     <div class="flash-message flash-{{ category }}">
-                        {{ message }}
+                        <div>
+                            <i class="fas fa-{% if category == 'success' %}check-circle{% elif category == 'error' %}exclamation-circle{% elif category == 'warning' %}exclamation-triangle{% else %}info-circle{% endif %}"></i>
+                            {{ message }}
+                        </div>
+                        <button class="flash-close" aria-label="Close message">&times;</button>
                     </div>
                 {% endfor %}
             {% endif %}
         {% endwith %}
-        
+    </div>
+
+    <!-- Main Content -->
+    <main>
         {% block content %}{% endblock %}
     </main>
 
@@ -538,6 +644,31 @@
                 document.querySelector(this.getAttribute('href')).scrollIntoView({
                     behavior: 'smooth'
                 });
+            });
+        });
+        
+        // Flash Messages Handling
+        document.addEventListener('DOMContentLoaded', function() {
+            // Close flash messages when clicked
+            document.querySelectorAll('.flash-close').forEach(button => {
+                button.addEventListener('click', function() {
+                    const flashMessage = this.closest('.flash-message');
+                    flashMessage.style.animation = 'fadeOut 0.5s ease forwards';
+                    setTimeout(() => {
+                        flashMessage.remove();
+                    }, 500);
+                });
+            });
+            
+            // Auto-remove flash messages after delay
+            const flashMessages = document.querySelectorAll('.flash-message');
+            flashMessages.forEach(message => {
+                setTimeout(() => {
+                    message.style.animation = 'fadeOut 0.5s ease forwards';
+                    setTimeout(() => {
+                        message.remove();
+                    }, 500);
+                }, 5000); // 5 seconds
             });
         });
         
