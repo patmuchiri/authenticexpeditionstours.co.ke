@@ -4,6 +4,7 @@ import smtplib
 
 app = Flask(__name__)
 app.secret_key = 'your_secret_key_here'  # Change this to a strong secret key
+application = app
 
 # Sample tour data
 tours = [
@@ -44,13 +45,14 @@ tours = [
 
 # === EMAIL CONFIGURATION ===
 SMTP_SERVER = 'mail.authenticexpeditionstours.co.ke'
-SMTP_PORT = 587
+SMTP_PORT = 465
 SENDER_EMAIL = 'booking@authenticexpeditionstours.co.ke' # Replace with your email
-SENDER_PASSWORD = 'authenticexpeditions@25' # Use App Password if using Gmail
-RECEIVER_EMAIL = 'bookings@authenticexpeditions.co.ke' # Company email to receive bookings
+SENDER_PASSWORD = 'authenticexpeditions@24' # Use App Password if using Gmail
+RECEIVER_EMAIL = 'booking@authenticexpeditionstours.co.ke' # Company email to receive bookings
 
 # === EMAIL FUNCTION ===
 def send_booking_email(data):
+    # First send notification to company
     msg = EmailMessage()
     msg.set_content(f"""
 New Booking Request Received:
@@ -71,16 +73,21 @@ Authentic Expeditions Tours Bot
     msg['To'] = RECEIVER_EMAIL
 
     try:
-        with smtplib.SMTP(SMTP_SERVER, SMTP_PORT) as server:
-            server.starttls()
+        with smtplib.SMTP_SSL(SMTP_SERVER, SMTP_PORT) as server:
             server.login(SENDER_EMAIL, SENDER_PASSWORD)
             server.send_message(msg)
         
-        # Send confirmation email to user
-        send_confirmation_email(data['name'], data['email'], data['tour'], data['date'])
+        # If company notification succeeds, send confirmation to client
+        confirmation_sent = send_confirmation_email(data['name'], data['email'], data['tour'], data['date'])
+        
+        if not confirmation_sent:
+            flash("Your booking was received but we couldn't send a confirmation email. Please check your email address.", "warning")
+            return False
+            
         return True
     except Exception as e:
-        print("Failed to send email:", e)
+        print("Failed to send email:", str(e))
+        flash(f"Booking submission failed: {str(e)}", "error")
         return False
 
 def send_confirmation_email(name, email, tour, date):
@@ -104,12 +111,14 @@ Authentic Expeditions Team
     msg['To'] = email
 
     try:
-        with smtplib.SMTP(SMTP_SERVER, SMTP_PORT) as server:
-            server.starttls()
+        with smtplib.SMTP_SSL(SMTP_SERVER, SMTP_PORT) as server:
+            # Removed server.starttls() since we're already using SMTP_SSL
             server.login(SENDER_EMAIL, SENDER_PASSWORD)
             server.send_message(msg)
+        return True
     except Exception as e:
         print("Failed to send confirmation email:", e)
+        return False
 
 # === FLASK ROUTES ===
 @app.route('/')
@@ -147,6 +156,7 @@ def contact():
 @app.route('/booking', methods=['GET', 'POST'])
 def booking():
     if request.method == 'POST':
+        print("Form data received:", request.form)
         data = {
             'name': request.form.get('name'),
             'email': request.form.get('email'),
